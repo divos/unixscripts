@@ -1,0 +1,122 @@
+
+Synopsis
+    install.sh [options] [mode] [command...]
+
+    NOTE: You must have root access to use this script.
+
+Description
+    This script walks through the installation of the products on this ISO.
+
+    With required conditions met and no options or arguments specified, this 
+    script will install QAS including group policy, prompting for information
+    as needed. This is referred to as "simple mode for QAS".
+
+    As an extension to simple mode you can pass the command line arguments 
+    listed at the end of this help page. These arguments correspond to the 
+    packages available on the ISO by which you can install a new product, as 
+    well as upgrade or remove any existing ones. Minimal, but essential 
+    information and interaction will ensue as needed.
+
+    Two additional usage modes including interactive and unattended are 
+    available for greater control over installation and, especially, for 
+    scripting.
+
+Global options
+    The following options apply to all modes:
+
+    -d                Turn on debug
+    -h                Displays basic command line help
+    --help            Displays full script help
+    -v,--version      Displays version and list products available on this ISO
+    -l path           Specify path to One Identity license file to copy 
+                        Not valid with -i (Interactive mode).
+    -p                Specify alternate ISO path to search for install packages.
+    -t                Test host and iso and report on what is installed and 
+                        available.
+
+    The debug level is useful in cooperation with the support personnel at 
+    One Identity LLC. It dumps a great deal of information to the console as well 
+    as creating a trace file on /tmp. A One Identity support person might ask for these
+    files which reveal only general information about your host platform 
+    (hostname, operating system and architecture, version, etc.).
+
+Modes:
+    <none>            Simple mode
+    -i                Interactive mode
+    -q                Unattended mode
+
+Commands:
+    Both simple and unattended modes will accept command arguments. Commands are 
+    formed using the product names. Use the '<product_name>' to install or 
+    upgrade and 'no<product_name>' to uninstall. You may also specify various 
+    special commands listed below. NOTE: Commands will be executed in specified
+    order. For a list of available products run 'install.sh -v'.
+
+    Special Commands:
+        upgrade         Upgrades all products on the system
+        remove          Removes all products from the system
+        join            Executes interactive vasjoin.sh script. Not valid 
+                            with -q (Unattended mode).
+        preflight       Executes interactive preflight test. Not valid 
+                            with -q (Unattended mode).
+        license         Executes interactive install of license files (or use 
+                            -l option). Not valid in with -q (Unattended mode).
+
+    Example:
+        # Upgrade vasclnt, uninstall vasgp, and install vasproxyd
+        install.sh vasclnt novasgp vasproxyd
+
+        # Upgrade all products
+        install.sh -q upgrade
+
+        # Remove all products and install vasclnt and vasgp
+        install.sh remove vasclnt vasgp
+
+Simple Mode
+    This mode is invoked by default. It will simply install vasclnt and vasgp 
+    and and then provide the option to join to the domain and license the 
+    product. This is useful for quickly setting up the machine for testing. You 
+    can specify an alternate set of commands to run at the command line.
+
+    Example:
+        # Install vasclnt and vasgp
+        install.sh
+
+        # Upgrade vasclnt and vasgp and uninstall vasyp
+        install.sh vasclnt vasgp novasyp
+
+Interactive Mode
+    Interactive mode creates a list of products available for installation. It is
+    engaged by invoking install.sh with the -i option. Any additional command-
+    line arguments passed are ignored.
+
+    The menu presented in this mode will include the options of installing,
+    upgrading or removing packages accordingly as they exist or do not exist 
+    on your host platform.
+
+    Example:
+        # Install products from menu
+        install.sh -i
+
+Unattended Mode
+    This mode was created specifically for scripting. No interaction or
+    confirmation of any kind is conducted that would halt a script in its
+    progress. The EULA will automatically be accepted. Some informative 
+    output will reach the console, however.
+
+    NOTE: The 'join', 'preflight', and 'license' commands are available but do 
+          not have a non-interactive mode.
+
+    Examples
+        # Install or upgrade the QAS client in unattended mode:
+        install.sh -q vasclnt
+
+        # Uninstall the QAS client in unattended mode:
+        install.sh -q novasclnt
+
+        # Upgrade the QAS client in simple mode while uninstalling the QAS SDK:
+        install.sh vasclnt novasdev
+
+        # Install the QAS and group policy clients along with your One Identity license
+        # in simple mode:
+        install.sh -l /tmp/license1.txt vasclnt vasgp

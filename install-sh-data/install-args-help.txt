@@ -1,0 +1,38 @@
+
+Synopsis
+    install.sh [options] [mode] [command...]
+
+    NOTE: You must have root access to use this script.
+
+Global options
+    The following options apply to all modes if desired:
+
+    -d                Turn on debug
+    -h                Displays basic command line help
+    --help            Displays full script help
+    -v,--version      Displays version and list products available on this ISO
+    -l path           Specify path to One Identity license file to copy 
+                        Not valid with -i (Interactive mode).
+    -p                Specify alternate ISO path to search for install packages.
+    -t                Test host and iso and report on what is installed and 
+                        available.
+
+Modes:
+    <none>            Simple mode
+    -i                Interactive mode
+    -q                Unattended mode
+
+Commands:
+    Use the '<product_name>' to install or upgrade and 'no<product_name>' to 
+    uninstall. Commands are not valid with -i (Interactive mode).
+
+    Special Commands:
+        upgrade         Upgrades all products on the system
+        remove          Removes all products from the system. Prefix 
+                            product name with 'no' for removal.
+        join            Executes interactive vasjoin.sh script. Not valid 
+                            with -q (Unattended mode).
+        preflight       Executes interactive preflight test. Not valid 
+                            with -q (Unattended mode).
+        license         Executes interactive install of license files (or use 
+                            -l option). Not valid in with -q (Unattended mode).
